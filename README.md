@@ -7,6 +7,9 @@
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![WebMCP](https://img.shields.io/badge/WebMCP-Imperative%20Tools-06B6D4)](https://github.com)
 [![HITL Guardrails](https://img.shields.io/badge/Safety-HITL%20Enforced-10B981)](#safety--governance-statement)
+[![Interview Q&A](https://img.shields.io/badge/Guide-Interview%20%26%20Judge%20Q%26A-purple.svg)](INTERVIEW_QA.md)
+
+**Quick Links**: [Interview & Judge Q&A Guide](INTERVIEW_QA.md) • [Devpost Submission Document](DEVPOST_SUBMISSION.md) • [Browser Test Evidence](README.md#browser-verification--test-evidence)
 
 ---
 
