@@ -4,7 +4,8 @@ import { initWebMCP } from '../types/webmcp';
 
 export default function WebMcpInspector({ isCalloutActive, onToolExecutedInUI }) {
   const modelContext = initWebMCP();
-  const tools = modelContext ? modelContext.getTools() : [];
+  const toolsRaw = modelContext && typeof modelContext.getTools === 'function' ? modelContext.getTools() : [];
+  const tools = Array.isArray(toolsRaw) ? toolsRaw : Array.from(toolsRaw || []);
 
   const [selectedToolName, setSelectedToolName] = useState('submit_human_approval');
   const [customParams, setCustomParams] = useState(
