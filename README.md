@@ -89,7 +89,7 @@ flowchart TB
             CalloutToggle["Simulation Toggle:\nModel Nurse Call-Out (6 RNs • 118m Wait)"]
             StrategyCards["3 Selectable Staffing Strategies\n(Protect Acuity • Float Pool • Hold)"]
             ActionControls["Visible Decision Controls:\n[ Approve Plan ] • [ Override Recommendation ]"]
-            LiveInspector["Embedded WebMCP Live Console\n(Schema Viewer • Parameter Editor • Runner)"]
+            LiveInspector["Embedded WebMCP Live Console\n(Schema Viewer • inputSchema Editor • Runner)"]
         end
 
         subgraph Clinician ["👩‍⚕️ Human Charge Nurse (J. Miller, RN)"]

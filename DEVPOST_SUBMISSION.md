@@ -27,7 +27,7 @@ SafeStaff Shift Commander provides a rich operational command center interface:
   3. *Hold and Monitor* (Resource conservation with a 30-min surge trigger).
 - **Human-In-The-Loop Decision Controls**: Clear **Approve Plan** and **Override Recommendation** buttons requiring clinical justification for overrides.
 - **Interactive WebMCP Console & Inspector**: Embedded playground to test and inspect all 5 imperative tools directly in the browser.
-- **Compliance Audit Trail**: Timestamped session audit trail with JSON export capturing every AI tool invocation, parameter payload, human approval, and clinical override.
+- **Compliance Audit Trail**: Timestamped session audit trail with JSON export capturing every AI tool invocation, inputSchema payload, human approval, and clinical override.
 
 ### 3. How We Built It
 - **Frontend & Design System**: React 18, Vite 6, Lucide React, and custom CSS implementing a dark command-center aesthetic (deep navy `#060a14`, glowing cyan `#06b6d4`, amber alert `#f59e0b`).
