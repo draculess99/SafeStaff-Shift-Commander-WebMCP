@@ -17,6 +17,35 @@
 
 ---
 
+## Overview
+
+**SafeStaff Shift Commander** is a hospital operations command-center interface designed to showcase how client-side AI agents can interface with complex operational web apps through **WebMCP** while maintaining strict **Human-In-The-Loop (HITL)** governance and clinical safety boundaries.
+
+In an active Level-1 Trauma Emergency Department, nurse staffing shortages and patient surges present critical trade-offs. While AI tools excel at high-speed census telemetry ingestion, non-linear queue forecasting, and candidate scenario generation, **clinical staffing actions must never be enacted autonomously by an AI agent**.
+
+SafeStaff Shift Commander demonstrates this dual paradigm:
+1. **Rich AI Assistance via WebMCP**: Agents can inspect live department state, forecast door-to-provider wait times, generate evidence-informed staffing options, and run multi-scenario comparisons.
+2. **Strict HITL Guardrails**: The approval tool strictly blocks autonomous execution, returning `{"status": "human_confirmation_required"}`. A licensed Charge Nurse must visually review and authorize or override every decision.
+
+---
+
+## Why WebMCP?
+
+Traditional AI assistants interact with operational dashboards by reading unstructured screen content or relying on custom backend integrations. That approach is brittle, difficult to govern, and gives teams limited visibility into what the agent can actually do.
+
+WebMCP lets SafeStaff expose a deliberately small, typed set of browser-native capabilities: inspect synthetic ED telemetry, forecast wait-time risk, generate staffing options, compare scenarios, and request—but never autonomously grant—human approval.
+
+This creates four practical advantages:
+
+- **Reliable agent access:** AI agents use named tools and JSON schemas rather than scraping the dashboard UI.
+- **Controlled scope:** The browser exposes only the five capabilities needed for safe decision support.
+- **Traceability:** Each tool call, recommendation, human approval, and override is visible in the session audit trail.
+- **Human authority by design:** The `submit_human_approval` tool always returns `human_confirmation_required`; only the Charge Nurse can approve or override a staffing decision in the interface.
+
+SafeStaff therefore demonstrates WebMCP as an architectural bridge between agentic assistance and governed, human-led operations—not as a mechanism for autonomous clinical decision-making.
+
+---
+
 ## System Architecture Diagram
 
 ```mermaid
