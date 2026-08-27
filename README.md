@@ -59,18 +59,87 @@ All 5 tools are imperatively registered into `document.modelContext.registerTool
 | `compare_staffing_scenario` | Generates side-by-side comparison of baseline, call-out, and mitigations. | `scenarioIds` (array) | Matrix comparing nurses, wait times, risk, and financial impact |
 | `submit_human_approval` | **HITL Safety Guardrail** | `planId` (str), `approverRole` (str), `rationale` (str) | **Always returns** `{"status": "human_confirmation_required"}` |
 
-### Mandatory HITL Safety Verification
+### WebMCP Tool Execution Guide & Test Suite
 
-```json
-// Tool: submit_human_approval Execution Result
-{
-  "status": "human_confirmation_required",
-  "guardrailPolicy": "HITL-SAFE-001",
-  "message": "Autonomous AI approval is disallowed. A licensed Charge Nurse must visually review and physically confirm or override this staffing decision via the Command Center interface.",
-  "submittedPlanId": "protect-high-acuity",
-  "timestamp": "2026-08-27T16:30:00.000Z"
-}
-```
+You can execute and verify all 5 tools directly in the embedded **WebMCP Imperative Tool Console & Inspector** at the bottom of the dashboard or programmatically via `document.modelContext.executeTool(name, params)`:
+
+#### 1. `get_shift_snapshot`
+* **Purpose**: Ingests real-time synthetic census, triage breakdown, and nurse headcount.
+* **Sample Input**: `{"departmentId": "ED-MAIN", "includeBreakdown": true}`
+* **Expected Output**:
+  ```json
+  {
+    "shiftId": "SHIFT-ED-2026-N02",
+    "department": "Main Emergency Department (Level 1 Trauma)",
+    "waitingPatients": 42,
+    "highAcuityArrivals": 3,
+    "availableNurses": 7,
+    "forecastWaitTimeMinutes": 96,
+    "safeTargetMinutes": 60,
+    "patientToNurseRatio": "6.0:1",
+    "acuityBreakdown": { "esi1_resus": 1, "esi2_emergent": 2, "esi3_urgent": 19, "esi4_lessUrgent": 14, "esi5_nonUrgent": 6 }
+  }
+  ```
+
+#### 2. `forecast_wait_time`
+* **Purpose**: Calculates projected queue delays based on volume, acuity, and staffing.
+* **Sample Input**: `{"waitingPatients": 42, "highAcuityArrivals": 3, "availableNurses": 6}`
+* **Expected Output**:
+  ```json
+  {
+    "predictedWaitMinutes": 118,
+    "safeTargetMinutes": 60,
+    "varianceFromSafeTarget": "+58 min",
+    "isTargetBreached": true,
+    "urgencyStatus": "CRITICAL_RISK"
+  }
+  ```
+
+#### 3. `generate_staffing_options`
+* **Purpose**: Proposes candidate staffing allocations with pros/cons and risk ratings.
+* **Sample Input**: `{"nurseCalloutActive": true, "targetRiskTolerance": "balanced"}`
+* **Expected Output**:
+  ```json
+  {
+    "recommendedPrimaryOptionId": "protect-high-acuity",
+    "candidateOptions": [
+      { "id": "protect-high-acuity", "title": "Protect High-Acuity Flow", "riskLevel": "Moderate", "predictedWaitMinutes": 104 },
+      { "id": "call-in-contingency", "title": "Call-In Contingency", "riskLevel": "Low", "predictedWaitMinutes": 68 },
+      { "id": "hold-and-monitor", "title": "Hold and Monitor", "riskLevel": "High", "predictedWaitMinutes": 118 }
+    ],
+    "governanceNotice": "AI recommendations require human charge nurse approval before implementation."
+  }
+  ```
+
+#### 4. `compare_staffing_scenario`
+* **Purpose**: Generates a side-by-side comparative matrix of operational outcomes.
+* **Sample Input**: `{"scenarioIds": ["baseline", "callout", "protect-high-acuity", "call-in-contingency"]}`
+* **Expected Output**:
+  ```json
+  {
+    "comparisonMatrix": [
+      { "scenario": "Baseline Shift", "nurses": 7, "forecastWaitMinutes": 96, "financialImpact": "$0" },
+      { "scenario": "Unmitigated Call-Out", "nurses": 6, "forecastWaitMinutes": 118, "financialImpact": "$0" },
+      { "scenario": "Plan A: Protect High-Acuity", "nurses": 6, "forecastWaitMinutes": 104, "financialImpact": "$0" },
+      { "scenario": "Plan B: Call-In Contingency", "nurses": 7, "forecastWaitMinutes": 68, "financialImpact": "+$450" }
+    ],
+    "bestClinicalSafety": "Plan A: Protect High-Acuity Flow",
+    "bestWaitReduction": "Plan B: Call-In Contingency"
+  }
+  ```
+
+#### 5. `submit_human_approval` (Strict HITL Guardrail)
+* **Purpose**: Intercepts autonomous approval requests and forces licensed human signoff.
+* **Sample Input**: `{"planId": "protect-high-acuity", "approverRole": "Charge Nurse"}`
+* **Enforced Output**:
+  ```json
+  {
+    "status": "human_confirmation_required",
+    "guardrailPolicy": "HITL-SAFE-001",
+    "message": "Autonomous AI approval is disallowed. A licensed Charge Nurse must visually review and physically confirm or override this staffing decision via the Command Center interface.",
+    "submittedPlanId": "protect-high-acuity"
+  }
+  ```
 
 ---
 
