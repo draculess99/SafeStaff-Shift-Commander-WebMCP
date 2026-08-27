@@ -132,7 +132,7 @@ flowchart TB
 ### 1. Shift Telemetry & Nurse Call-Out Simulation
 When an unplanned absence occurs (e.g. Pod B nurse calls out), available nurses drop from **7 to 6**, and the door-to-provider forecast wait time surges from **96 min to 118 min** (breaching the 60-minute safe ceiling).
 
-![01-dashboard-callout](evidence/01-dashboard-callout.png)
+![01-dashboard-callout](evidence/01-dashboard-callout.png?raw=true&v=2)
 
 ---
 
@@ -142,21 +142,21 @@ The system formulates 3 distinct clinical mitigation models:
 2. **Call-In Contingency**: Dispatches an on-call Float Pool RN, bringing wait time down to **68 minutes** (+$450 float cost).
 3. **Hold and Monitor**: Conserves resources and sets a 30-minute re-evaluation trigger.
 
-![02-staffing-options](evidence/02-staffing-options.png)
+![02-staffing-options](evidence/02-staffing-options.png?raw=true&v=2)
 
 ---
 
 ### 3. Human-In-The-Loop Approval Signoff
 The licensed Charge Nurse reviews the trade-offs and clicks **Approve Plan**. The sign-off is committed to the timestamped session audit trail with JSON export.
 
-![03-human-approval-audit](evidence/03-human-approval-audit.png)
+![03-human-approval-audit](evidence/03-human-approval-audit.png?raw=true&v=2)
 
 ---
 
 ### 4. Clinical Override with Mandatory Rationale
 If the Charge Nurse needs to alter the plan due to changing floor conditions, they select **Override Recommendation** and enter a mandatory clinical rationale.
 
-![04-override-audit](evidence/04-override-audit.png)
+![04-override-audit](evidence/04-override-audit.png?raw=true&v=2)
 
 ---
 
@@ -164,7 +164,7 @@ If the Charge Nurse needs to alter the plan due to changing floor conditions, th
 Any attempt by an autonomous AI agent to execute `submit_human_approval()` is intercepted by our safety guardrail, returning:
 `{"status": "human_confirmation_required"}`.
 
-![05-webmcp-hitl-guardrail](evidence/05-webmcp-hitl-guardrail.png)
+![05-webmcp-hitl-guardrail](evidence/05-webmcp-hitl-guardrail.png?raw=true&v=2)
 
 ---
 
@@ -331,11 +331,11 @@ The application underwent full end-to-end browser verification on the deployed U
 
 | Step | Verification Milestone | Observed Behavior | Evidence Screenshot |
 |---|---|---|---|
-| **01** | **Shift Telemetry & Call-Out Mode** | Toggling "Model Nurse Call-Out" switches nurses from 7 to 6 and forecast wait time from 96m to 118m. | [`evidence/01-dashboard-callout.png`](evidence/01-dashboard-callout.png) |
-| **02** | **Staffing Strategy Selection** | Successfully selected "Call-In Contingency" showing pod allocations and 68m projected wait time. | [`evidence/02-staffing-options.png`](evidence/02-staffing-options.png) |
-| **03** | **Human Approval Signoff** | Clicked "Approve Plan"; visual feedback confirmed and signoff event was added to the audit trail. | [`evidence/03-human-approval-audit.png`](evidence/03-human-approval-audit.png) |
-| **04** | **Clinical Override & Governance** | Overrode recommendation with mandatory clinical justification; recorded with actor attribution in audit trail. | [`evidence/04-override-audit.png`](evidence/04-override-audit.png) |
-| **05** | **WebMCP HITL Safety Guardrail** | In the live WebMCP Console, executed `submit_human_approval()` and received `{"status": "human_confirmation_required"}`. | [`evidence/05-webmcp-hitl-guardrail.png`](evidence/05-webmcp-hitl-guardrail.png) |
+| **01** | **Shift Telemetry & Call-Out Mode** | Toggling "Model Nurse Call-Out" switches nurses from 7 to 6 and forecast wait time from 96m to 118m. | [`evidence/01-dashboard-callout.png`](evidence/01-dashboard-callout.png?raw=true&v=2) |
+| **02** | **Staffing Strategy Selection** | Successfully selected "Call-In Contingency" showing pod allocations and 68m projected wait time. | [`evidence/02-staffing-options.png`](evidence/02-staffing-options.png?raw=true&v=2) |
+| **03** | **Human Approval Signoff** | Clicked "Approve Plan"; visual feedback confirmed and signoff event was added to the audit trail. | [`evidence/03-human-approval-audit.png`](evidence/03-human-approval-audit.png?raw=true&v=2) |
+| **04** | **Clinical Override & Governance** | Overrode recommendation with mandatory clinical justification; recorded with actor attribution in audit trail. | [`evidence/04-override-audit.png`](evidence/04-override-audit.png?raw=true&v=2) |
+| **05** | **WebMCP HITL Safety Guardrail** | In the live WebMCP Console, executed `submit_human_approval()` and received `{"status": "human_confirmation_required"}`. | [`evidence/05-webmcp-hitl-guardrail.png`](evidence/05-webmcp-hitl-guardrail.png?raw=true&v=2) |
 
 ---
 
