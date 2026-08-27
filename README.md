@@ -1,6 +1,6 @@
 # SafeStaff Shift Commander — WebMCP
 
-> **A synthetic emergency-department nurse-staffing decision-support dashboard demonstrating the imperative WebMCP API (`document.modelContext.registerTool`).**
+> **A synthetic emergency-department nurse-staffing decision-support dashboard demonstrating the imperative WebMCP API (`document.modelContext.registerTool`) with strict Human-In-The-Loop (HITL) safety guardrails.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?logo=vite&logoColor=white)](https://vite.dev)
@@ -9,44 +9,122 @@
 [![HITL Guardrails](https://img.shields.io/badge/Safety-HITL%20Enforced-10B981)](#safety--governance-statement)
 [![Interview Q&A](https://img.shields.io/badge/Guide-Interview%20%26%20Judge%20Q%26A-purple.svg)](INTERVIEW_QA.md)
 
-**Quick Links**: [Interview & Judge Q&A Guide](INTERVIEW_QA.md) • [Devpost Submission Document](DEVPOST_SUBMISSION.md) • [Browser Test Evidence](README.md#browser-verification--test-evidence)
+**Quick Links**: [Interview & Judge Q&A Guide](INTERVIEW_QA.md) • [Devpost Submission Guide](DEVPOST_SUBMISSION.md) • [Browser Test Evidence](#browser-verification--test-evidence) • [Architecture Deep-Dive](#frequently-asked-questions--architecture-deep-dive)
 
 ---
 
-## Overview
-
-**SafeStaff Shift Commander** is a hospital operations command-center interface designed to showcase how client-side AI agents can interface with complex operational web apps through **WebMCP** while maintaining strict **Human-In-The-Loop (HITL)** governance and clinical safety boundaries.
-
-In an active Level-1 Trauma Emergency Department, nurse staffing shortages and patient surges present critical trade-offs. While AI tools excel at high-speed census telemetry ingestion, non-linear queue forecasting, and candidate scenario generation, **clinical staffing actions must never be enacted autonomously by an AI agent**.
-
-SafeStaff Shift Commander demonstrates this dual paradigm:
-1. **Rich AI Assistance via WebMCP**: Agents can inspect live department state, forecast door-to-provider wait times, generate evidence-informed staffing options, and run multi-scenario comparisons.
-2. **Immutable HITL Guardrails**: The approval tool strictly blocks autonomous execution, returning `{"status": "human_confirmation_required"}`. A licensed Charge Nurse must visually review and authorize or override every decision.
+![SafeStaff Command Center](devpost_thumbnail.jpg)
 
 ---
 
-## Key Product Flow
+## System Architecture Diagram
 
-1. **Shift Snapshot Telemetry**:
-   - Waiting Patients: **42**
-   - High-Acuity Arrivals: **3** (ESI 1-2 Resuscitation / Emergent)
-   - Available Nurses: **7**
-   - Forecast Wait Time: **96 minutes** vs Safe Target: **60 minutes**
-   - ESI Triage Census Breakdown (ESI-1 through ESI-5)
-2. **"Model Nurse Call-Out" Scenario**:
-   - Simulates an unplanned absence mid-shift.
-   - When enabled: Available nurses drop to **6 RNs**, and forecast wait surges to **118 minutes** (+58m over safe target).
-3. **Three Selectable Staffing Action Plans**:
-   - **Protect High-Acuity Flow**: Ring-fences dedicated 1:1 and 1:2 coverage for critical pods (zero delay for life-threats, minor low-acuity queue delay).
-   - **Call-In Contingency**: Dispatches on-call ED Float Pool RN (drops wait to 68m, incurs $450 differential).
-   - **Hold and Monitor**: Preserves float hours, monitors surge threshold with 30-minute re-evaluation alert.
-4. **Human Decision Controls & Signoff**:
-   - **Approve Plan**: Authorizes the selected recommendation with cryptographic audit trail logging.
-   - **Override Recommendation**: Allows the Charge Nurse to select an alternate strategy and submit a mandatory clinical rationale.
-5. **Interactive WebMCP Console**:
-   - Built-in live API workbench allowing direct testing of all 5 registered tools, parameter editing, JSON schema inspection, and execution timing.
-6. **Compliance Audit Trail**:
-   - Chronological, exportable event log tracking all AI tool calls, human approvals, and overrides with actor attribution and JSON payloads.
+```mermaid
+flowchart TB
+    subgraph ClientBrowser ["🌐 Browser Client Runtime (WebMCP Environment)"]
+        subgraph WebMCP ["⚙️ WebMCP Imperative Interface (document.modelContext)"]
+            T1["🔍 get_shift_snapshot()"]
+            T2["⏱️ forecast_wait_time()"]
+            T3["📋 generate_staffing_options()"]
+            T4["📊 compare_staffing_scenario()"]
+            T5["🔒 submit_human_approval()"]
+        end
+
+        subgraph AI_Agent ["🤖 Client-Side AI Agent / Copilot"]
+            direction TB
+            AgentBrain["AI Reasoning Engine"] -->|Inspects Telemetry| T1
+            AgentBrain -->|Computes Risk| T2
+            AgentBrain -->|Formulates Plans| T3
+            AgentBrain -->|Compares Scenarios| T4
+            AgentBrain -.->|Attempts Approval| T5
+        end
+
+        subgraph Safety_Guardrail ["🛡️ HITL Safety Guardrail"]
+            T5 -->|STRICT POLICY| BlockAction["🚫 Autonomous Execution Blocked\nReturns: {status: 'human_confirmation_required'}"]
+        end
+
+        subgraph Command_Center_UI ["🏥 Emergency Department Command Center UI"]
+            direction TB
+            LiveTelemetry["Live Shift Snapshot\n(42 Patients • 7 RNs • 96m Wait)"]
+            CalloutToggle["Simulation Toggle:\nModel Nurse Call-Out (6 RNs • 118m Wait)"]
+            StrategyCards["3 Selectable Staffing Strategies\n(Protect Acuity • Float Pool • Hold)"]
+            ActionControls["Visible Decision Controls:\n[ Approve Plan ] • [ Override Recommendation ]"]
+            LiveInspector["Embedded WebMCP Live Console\n(Schema Viewer • Parameter Editor • Runner)"]
+        end
+
+        subgraph Clinician ["👩‍⚕️ Human Charge Nurse (J. Miller, RN)"]
+            ReviewState["1. Visually Reviews Recommendations\n2. Weighs Queuing Delays vs Float Costs\n3. Enters Clinical Rationale if Overriding"]
+            Authorize["4. Executes Physical Sign-Off"]
+        end
+
+        subgraph Audit_Log ["📜 Compliance & Governance Audit Trail"]
+            AuditRecords["Immutable Chronological Log\n• Actor Attribution (HUMAN vs WEBMCP)\n• Timestamped Sign-Off Hashes\n• Exportable Structured JSON"]
+        end
+    end
+
+    %% Connections
+    LiveTelemetry --> StrategyCards
+    CalloutToggle --> LiveTelemetry
+    StrategyCards --> ActionControls
+    Clinician -->|Inspects UI| StrategyCards
+    Clinician -->|Physical Click| ActionControls
+    ActionControls -->|Writes Event| Audit_Log
+    BlockAction -->|Logs Blocked Attempt| Audit_Log
+    WebMCP <-->|Live Telemetry Sync| LiveTelemetry
+
+    classDef agent fill:#0f172a,stroke:#06b6d4,stroke-width:2px,color:#f8fafc;
+    classDef safety fill:#450a0a,stroke:#f43f5e,stroke-width:2px,color:#fecdd3;
+    classDef ui fill:#0c1427,stroke:#0284c7,stroke-width:2px,color:#f8fafc;
+    classDef human fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#ecfdf5;
+    classDef audit fill:#1e1b4b,stroke:#a855f7,stroke-width:2px,color:#f3e8ff;
+
+    class AI_Agent agent;
+    class Safety_Guardrail safety;
+    class Command_Center_UI ui;
+    class Clinician human;
+    class Audit_Log audit;
+```
+
+---
+
+## Visual Walkthrough & Product Flow
+
+### 1. Shift Telemetry & Nurse Call-Out Simulation
+When an unplanned absence occurs (e.g. Pod B nurse calls out), available nurses drop from **7 to 6**, and the door-to-provider forecast wait time surges from **96 min to 118 min** (breaching the 60-minute safe ceiling).
+
+![01-dashboard-callout](evidence/01-dashboard-callout.png)
+
+---
+
+### 2. Three Evidence-Informed Staffing Plans
+The system formulates 3 distinct clinical mitigation models:
+1. **Protect High-Acuity Flow**: Ring-fences dedicated 1:1 coverage for trauma/resuscitation arrivals ($0 cost).
+2. **Call-In Contingency**: Dispatches an on-call Float Pool RN, bringing wait time down to **68 minutes** (+$450 float cost).
+3. **Hold and Monitor**: Conserves resources and sets a 30-minute re-evaluation trigger.
+
+![02-staffing-options](evidence/02-staffing-options.png)
+
+---
+
+### 3. Human-In-The-Loop Approval Signoff
+The licensed Charge Nurse reviews the trade-offs and clicks **Approve Plan**. The sign-off is permanently committed to the immutable compliance log.
+
+![03-human-approval-audit](evidence/03-human-approval-audit.png)
+
+---
+
+### 4. Clinical Override with Mandatory Rationale
+If the Charge Nurse needs to alter the plan due to changing floor conditions, they select **Override Recommendation** and enter a mandatory clinical rationale.
+
+![04-override-audit](evidence/04-override-audit.png)
+
+---
+
+### 5. WebMCP Tool Console & Safety Guardrail Execution
+Any attempt by an autonomous AI agent to execute `submit_human_approval()` is intercepted by our safety guardrail, returning:
+`{"status": "human_confirmation_required"}`.
+
+![05-webmcp-hitl-guardrail](evidence/05-webmcp-hitl-guardrail.png)
 
 ---
 
