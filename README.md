@@ -221,6 +221,25 @@ The application underwent full end-to-end automated browser verification on `htt
 
 ---
 
+## Frequently Asked Questions & Architecture Deep-Dive
+
+#### Q1: Why use the imperative WebMCP API (`document.modelContext.registerTool`)?
+> **Answer**: The imperative WebMCP registration pattern gives web developers full programmatic control over schemas, validation, execution timing, and return payloads. It registers tools directly into the browser's client runtime without requiring heavy external proxy servers or network hops.
+
+#### Q2: Why is autonomous AI approval strictly prohibited?
+> **Answer**: In healthcare environments, staffing allocations directly impact patient mortality and nurse burnout. SafeStaff enforces an immutable **Human-In-The-Loop (HITL)** guardrail. The `submit_human_approval` tool intentionally returns `{"status": "human_confirmation_required"}` to prove that autonomous AI agents cannot enact staffing changes.
+
+#### Q3: How is data privacy and HIPAA/PHI handled?
+> **Answer**: SafeStaff uses 100% synthetic census data and aggregate Emergency Severity Index (ESI 1–5) triage counts. There is zero Protected Health Information (PHI) and no connection to real medical records.
+
+#### Q4: What happens during a nurse call-out?
+> **Answer**: When an unplanned call-out is modeled, active floor nurses drop from 7 to 6. Our simulation engine models the non-linear impact of nurse-to-patient ratios, causing the projected wait time to surge from 96 min to 118 min (+58 min over the 60-min safe ceiling).
+
+#### Q5: What happens when a clinician overrides the AI recommendation?
+> **Answer**: The Charge Nurse selects an alternative plan and is required to enter a clinical rationale. The override event, timestamp, clinician ID, and rationale are permanently recorded in the compliance audit trail.
+
+---
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
