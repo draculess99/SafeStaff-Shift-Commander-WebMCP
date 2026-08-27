@@ -106,7 +106,8 @@ All 5 tools are imperatively registered into `document.modelContext.registerTool
 ### Installation
 
 ```bash
-# Clone or navigate to the repository
+# Clone the repository
+git clone https://github.com/draculess99/SafeStaff-Shift-Commander-WebMCP.git
 cd SafeStaff-Shift-Commander-WebMCP
 
 # Install dependencies
@@ -137,4 +138,3 @@ npm run preview
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-"# SafeStaff-Shift-Commander-WebMCP" 
