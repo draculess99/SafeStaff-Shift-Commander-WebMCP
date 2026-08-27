@@ -132,6 +132,8 @@ flowchart TB
 ### 1. Shift Telemetry & Nurse Call-Out Simulation
 When an unplanned absence occurs (e.g. Pod B nurse calls out), available nurses drop from **7 to 6**, and the door-to-provider forecast wait time surges from **96 min to 118 min** (breaching the 60-minute safe ceiling).
 
+![00-dashboard-callout](evidence/00-dashboard-callout.png?raw=true&v=2)
+
 ![01-dashboard-callout](evidence/01-dashboard-callout.png?raw=true&v=2)
 
 ---
