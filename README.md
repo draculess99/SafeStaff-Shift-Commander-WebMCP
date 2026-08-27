@@ -87,7 +87,7 @@ flowchart TB
         end
 
         subgraph Audit_Log ["📜 Compliance & Governance Audit Trail"]
-            AuditRecords["Immutable Chronological Log\n• Actor Attribution (HUMAN vs WEBMCP)\n• Timestamped Sign-Off Hashes\n• Exportable Structured JSON"]
+            AuditRecords["Timestamped Session Audit Trail\n• Actor Attribution (HUMAN vs WEBMCP)\n• Human Approval and Override Events\n• Exportable Structured JSON"]
         end
     end
 
@@ -159,7 +159,7 @@ Any attempt by an autonomous AI agent to execute `submit_human_approval()` is in
 
 ## WebMCP Tool Specifications
  
-All 5 tools are imperatively registered into `document.modelContext.registerTool(...)` upon mounting. When running in standard browsers without native WebMCP injection, the dashboard initializes a local demo adapter (`document.modelContext`) to allow complete in-browser testing while maintaining 100% native API parity.
+All 5 tools are imperatively registered into `document.modelContext.registerTool(...)` upon mounting. When running in standard browsers without native WebMCP injection, the dashboard initializes a local demo adapter (`document.modelContext`) to allow complete in-browser testing while preserving the same named tools, JSON schemas, and interaction flow.
 
 | Tool Identifier | Purpose | Input Parameters | Key Return Characteristics |
 |---|---|---|---|
