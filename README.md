@@ -107,7 +107,7 @@ The system formulates 3 distinct clinical mitigation models:
 ---
 
 ### 3. Human-In-The-Loop Approval Signoff
-The licensed Charge Nurse reviews the trade-offs and clicks **Approve Plan**. The sign-off is permanently committed to the immutable compliance log.
+The licensed Charge Nurse reviews the trade-offs and clicks **Approve Plan**. The sign-off is committed to the timestamped session audit trail with JSON export.
 
 ![03-human-approval-audit](evidence/03-human-approval-audit.png)
 
@@ -129,8 +129,8 @@ Any attempt by an autonomous AI agent to execute `submit_human_approval()` is in
 ---
 
 ## WebMCP Tool Specifications
-
-All 5 tools are imperatively registered into `document.modelContext.registerTool(...)` upon mounting:
+ 
+All 5 tools are imperatively registered into `document.modelContext.registerTool(...)` upon mounting. When running in standard browsers without native WebMCP injection, the dashboard initializes a local demo adapter (`document.modelContext`) to allow complete in-browser testing while maintaining 100% native API parity.
 
 | Tool Identifier | Purpose | Input Parameters | Key Return Characteristics |
 |---|---|---|---|
@@ -287,13 +287,13 @@ npm run preview
 
 ## Browser Verification & Test Evidence
 
-The application underwent full end-to-end automated browser verification on `http://localhost:5173/`. All 5 verification milestones passed with 0 console errors:
+The application underwent full end-to-end browser verification on `http://localhost:5173/`. All 5 verification milestones passed with 0 console errors:
 
 | Step | Verification Milestone | Observed Behavior | Evidence Screenshot |
 |---|---|---|---|
 | **01** | **Shift Telemetry & Call-Out Mode** | Toggling "Model Nurse Call-Out" switches nurses from 7 to 6 and forecast wait time from 96m to 118m. | [`evidence/01-dashboard-callout.png`](evidence/01-dashboard-callout.png) |
 | **02** | **Staffing Strategy Selection** | Successfully selected "Call-In Contingency" showing pod allocations and 68m projected wait time. | [`evidence/02-staffing-options.png`](evidence/02-staffing-options.png) |
-| **03** | **Human Approval Signoff** | Clicked "Approve Plan"; visual feedback confirmed and immutable signoff event was added to the audit trail. | [`evidence/03-human-approval-audit.png`](evidence/03-human-approval-audit.png) |
+| **03** | **Human Approval Signoff** | Clicked "Approve Plan"; visual feedback confirmed and signoff event was added to the audit trail. | [`evidence/03-human-approval-audit.png`](evidence/03-human-approval-audit.png) |
 | **04** | **Clinical Override & Governance** | Overrode recommendation with mandatory clinical justification; recorded with actor attribution in audit trail. | [`evidence/04-override-audit.png`](evidence/04-override-audit.png) |
 | **05** | **WebMCP HITL Safety Guardrail** | In the live WebMCP Console, executed `submit_human_approval()` and received `{"status": "human_confirmation_required"}`. | [`evidence/05-webmcp-hitl-guardrail.png`](evidence/05-webmcp-hitl-guardrail.png) |
 
@@ -305,16 +305,16 @@ The application underwent full end-to-end automated browser verification on `htt
 > **Answer**: The imperative WebMCP registration pattern gives web developers full programmatic control over schemas, validation, execution timing, and return payloads. It registers tools directly into the browser's client runtime without requiring heavy external proxy servers or network hops.
 
 #### Q2: Why is autonomous AI approval strictly prohibited?
-> **Answer**: In healthcare environments, staffing allocations directly impact patient mortality and nurse burnout. SafeStaff enforces an immutable **Human-In-The-Loop (HITL)** guardrail. The `submit_human_approval` tool intentionally returns `{"status": "human_confirmation_required"}` to prove that autonomous AI agents cannot enact staffing changes.
+> **Answer**: In healthcare environments, staffing allocations directly impact patient mortality and nurse burnout. SafeStaff enforces a strict **Human-In-The-Loop (HITL)** guardrail. The `submit_human_approval` tool intentionally returns `{"status": "human_confirmation_required"}` to prove that autonomous AI agents cannot enact staffing changes.
 
-#### Q3: How is data privacy and HIPAA/PHI handled?
-> **Answer**: SafeStaff uses 100% synthetic census data and aggregate Emergency Severity Index (ESI 1–5) triage counts. There is zero Protected Health Information (PHI) and no connection to real medical records.
+#### Q3: How is data privacy handled?
+> **Answer**: This synthetic demonstration contains no PHI and is not a certified clinical system. SafeStaff uses 100% synthetic census data and aggregate Emergency Severity Index (ESI 1–5) triage counts with zero real patient records.
 
 #### Q4: What happens during a nurse call-out?
 > **Answer**: When an unplanned call-out is modeled, active floor nurses drop from 7 to 6. Our simulation engine models the non-linear impact of nurse-to-patient ratios, causing the projected wait time to surge from 96 min to 118 min (+58 min over the 60-min safe ceiling).
 
 #### Q5: What happens when a clinician overrides the AI recommendation?
-> **Answer**: The Charge Nurse selects an alternative plan and is required to enter a clinical rationale. The override event, timestamp, clinician ID, and rationale are permanently recorded in the compliance audit trail.
+> **Answer**: The Charge Nurse selects an alternative plan and is required to enter a clinical rationale. The override event, timestamp, clinician ID, and rationale are permanently recorded in the timestamped session audit trail with JSON export.
 
 ---
 

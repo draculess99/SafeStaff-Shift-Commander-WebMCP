@@ -6,7 +6,7 @@ An Emergency Department nurse-staffing decision-support dashboard demonstrating 
 ---
 
 ## Elevator Pitch
-SafeStaff Shift Commander is a synthetic hospital operations command-center dashboard built for the WebMCP Hackathon. It demonstrates how AI agents can inspect live Emergency Department census telemetry, forecast non-linear wait times, and compare staffing mitigations via the **imperative WebMCP API** (`document.modelContext.registerTool`), while strictly enforcing clinical safety guardrails: **AI tools are architecturally prevented from autonomously enacting staffing decisions**—every plan requires explicit Charge Nurse approval or override with an immutable audit trail.
+SafeStaff Shift Commander is a synthetic hospital operations command-center dashboard built for the WebMCP Hackathon. It demonstrates how AI agents can inspect live Emergency Department census telemetry, forecast non-linear wait times, and compare staffing mitigations via the **imperative WebMCP API** (`document.modelContext.registerTool`), while strictly enforcing clinical safety guardrails: **AI tools are architecturally prevented from autonomously enacting staffing decisions**—every plan requires explicit Charge Nurse approval or override with a timestamped session audit trail with JSON export.
 
 ---
 
@@ -27,7 +27,7 @@ SafeStaff Shift Commander provides a rich operational command center interface:
   3. *Hold and Monitor* (Resource conservation with a 30-min surge trigger).
 - **Human-In-The-Loop Decision Controls**: Clear **Approve Plan** and **Override Recommendation** buttons requiring clinical justification for overrides.
 - **Interactive WebMCP Console & Inspector**: Embedded playground to test and inspect all 5 imperative tools directly in the browser.
-- **Compliance Audit Trail**: Immutable chronological log capturing every AI tool invocation, parameter payload, human approval, and clinical override with exportable JSON.
+- **Compliance Audit Trail**: Timestamped session audit trail with JSON export capturing every AI tool invocation, parameter payload, human approval, and clinical override.
 
 ### 3. How We Built It
 - **Frontend & Design System**: React 18, Vite 6, Lucide React, and custom CSS implementing a dark command-center aesthetic (deep navy `#060a14`, glowing cyan `#06b6d4`, amber alert `#f59e0b`).

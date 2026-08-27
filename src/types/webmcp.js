@@ -7,6 +7,7 @@
 
 class WebMCPContext {
   constructor() {
+    this.isLocalDemoAdapter = true;
     this.tools = new Map();
     this.executionHistory = [];
     this.listeners = new Set();

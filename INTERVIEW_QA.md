@@ -34,13 +34,13 @@ This guide prepares you for questions from judges, technical reviewers, or hirin
 
 ### 5. "What happens when a Charge Nurse overrides the AI recommendation?"
 **Answer:**
-> "If the clinician disagrees with the AI's primary recommendation, they click **Override Recommendation**, select an alternative plan, and are required to input a clinical rationale (e.g. *'Holding contingency nurse on standby due to simultaneous trauma activations'*). This ensures full accountability and creates a complete record in the immutable audit trail."
+> "If the clinician disagrees with the AI's primary recommendation, they click **Override Recommendation**, select an alternative plan, and are required to input a clinical rationale (e.g. *'Holding contingency nurse on standby due to simultaneous trauma activations'*). This ensures full accountability and creates a complete record in the timestamped session audit trail with JSON export."
 
 ---
 
 ### 6. "How is data privacy and PHI handled?"
 **Answer:**
-> "SafeStaff operates purely on synthetic census telemetry and aggregate triage classifications (ESI 1 through ESI 5). There is zero Protected Health Information (PHI) and no connection to real medical records, ensuring complete HIPAA/GDPR alignment by design."
+> "This synthetic demonstration contains no PHI and is not a certified clinical system. SafeStaff operates purely on synthetic census telemetry and aggregate triage classifications (ESI 1 through ESI 5) with zero Protected Health Information."
 
 ---
 

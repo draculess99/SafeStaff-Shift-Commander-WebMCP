@@ -41,7 +41,7 @@ export default function Header({ webmcpReady, toolCount, isCalloutActive }) {
                 SafeStaff <span style={{ color: 'var(--cyan-400)' }}>Shift Commander</span>
               </h1>
               <span className="badge badge-cyan" style={{ fontSize: '0.68rem', padding: '0.15rem 0.5rem' }}>
-                WebMCP Enabled
+                WebMCP • Local Demo Adapter
               </span>
             </div>
             <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '2px' }}>
@@ -101,7 +101,7 @@ export default function Header({ webmcpReady, toolCount, isCalloutActive }) {
           }}>
             <Cpu size={16} color="var(--cyan-400)" />
             <div style={{ fontSize: '0.75rem' }}>
-              <div style={{ color: 'var(--cyan-400)', fontSize: '0.68rem', fontWeight: '700' }}>WebMCP RUNTIME</div>
+              <div style={{ color: 'var(--cyan-400)', fontSize: '0.68rem', fontWeight: '700' }}>WebMCP (DEMO ADAPTER)</div>
               <div style={{ fontWeight: '600', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <span className="font-mono">{toolCount}</span> Tools Registered
               </div>
