@@ -27,7 +27,7 @@ export function registerWebMcpTools(getCurrentState, onToolExecuted) {
   const toolSnapshot = {
     name: 'get_shift_snapshot',
     description: 'Retrieves current synthetic emergency department shift metrics including census, triage acuity levels, nurse count, and safe target.',
-    parameters: {
+    inputSchema: {
       type: 'object',
       properties: {
         departmentId: {
@@ -70,7 +70,7 @@ export function registerWebMcpTools(getCurrentState, onToolExecuted) {
   const toolForecast = {
     name: 'forecast_wait_time',
     description: 'Forecasts emergency department door-to-provider wait time based on patient volume, high-acuity arrivals, and nurse headcount.',
-    parameters: {
+    inputSchema: {
       type: 'object',
       properties: {
         waitingPatients: {
@@ -115,7 +115,7 @@ export function registerWebMcpTools(getCurrentState, onToolExecuted) {
   const toolOptions = {
     name: 'generate_staffing_options',
     description: 'Generates evidence-informed staffing scenario recommendations for charge nurse review based on acuity stress and call-out status.',
-    parameters: {
+    inputSchema: {
       type: 'object',
       properties: {
         nurseCalloutActive: {
@@ -162,7 +162,7 @@ export function registerWebMcpTools(getCurrentState, onToolExecuted) {
   const toolCompare = {
     name: 'compare_staffing_scenario',
     description: 'Compares multiple staffing scenarios (Baseline, Call-Out Unmitigated, Protect High Acuity, Call-in Contingency) side-by-side.',
-    parameters: {
+    inputSchema: {
       type: 'object',
       properties: {
         scenarioIds: {
@@ -226,7 +226,7 @@ export function registerWebMcpTools(getCurrentState, onToolExecuted) {
   const toolApproval = {
     name: 'submit_human_approval',
     description: 'Submits a staffing plan for validation. ALWAYS returns human_confirmation_required to enforce that autonomous AI cannot enact staffing changes.',
-    parameters: {
+    inputSchema: {
       type: 'object',
       properties: {
         planId: {

@@ -18,7 +18,7 @@ class WebMCPContext {
    * @param {Object} toolDefinition
    * @param {string} toolDefinition.name - Tool identifier
    * @param {string} toolDefinition.description - Purpose of the tool
-   * @param {Object} toolDefinition.parameters - JSON schema of parameters
+   * @param {Object} toolDefinition.inputSchema - JSON schema of parameters
    * @param {Function} toolDefinition.execute - Async/sync execution function
    */
   registerTool(toolDefinition) {
@@ -29,7 +29,7 @@ class WebMCPContext {
     const tool = {
       name: toolDefinition.name,
       description: toolDefinition.description || '',
-      parameters: toolDefinition.parameters || { type: 'object', properties: {} },
+      inputSchema: toolDefinition.inputSchema || toolDefinition.parameters || { type: 'object', properties: {} },
       execute: toolDefinition.execute || (async () => ({})),
       registeredAt: new Date().toISOString()
     };

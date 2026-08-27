@@ -183,7 +183,7 @@ export default function WebMcpInspector({ isCalloutActive, onToolExecutedInUI })
             <div style={{ marginBottom: '0.75rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
                 <span style={{ fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
-                  Input Parameters (JSON):
+                  Input Schema (JSON):
                 </span>
                 <span style={{ fontSize: '0.68rem', color: 'var(--cyan-400)', cursor: 'pointer' }} onClick={() => handleSelectTool(selectedTool.name)}>
                   Reset Sample

@@ -161,7 +161,7 @@ Any attempt by an autonomous AI agent to execute `submit_human_approval()` is in
  
 All 5 tools are imperatively registered into `document.modelContext.registerTool(...)` upon mounting. When running in standard browsers without native WebMCP injection, the dashboard initializes a local demo adapter (`document.modelContext`) to allow complete in-browser testing while preserving the same named tools, JSON schemas, and interaction flow.
 
-| Tool Identifier | Purpose | Input Parameters | Key Return Characteristics |
+| Tool Identifier | Purpose | Input Schema | Key Return Characteristics |
 |---|---|---|---|
 | `get_shift_snapshot` | Returns current synthetic census, triage acuity, nurse count, and ratio. | `departmentId` (str), `includeBreakdown` (bool) | Current department metrics & ESI breakdown |
 | `forecast_wait_time` | Calculates projected door-to-provider wait time based on staffing. | `waitingPatients` (int), `highAcuityArrivals` (int), `availableNurses` (int) | `predictedWaitMinutes`, `varianceFromSafeTarget`, `urgencyStatus` |
