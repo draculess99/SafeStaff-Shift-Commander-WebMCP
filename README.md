@@ -11,6 +11,9 @@
 
 **Quick Links**: [Interview & Judge Q&A Guide](INTERVIEW_QA.md) • [Devpost Submission Guide](DEVPOST_SUBMISSION.md) • [Browser Test Evidence](#browser-verification--test-evidence) • [Architecture Deep-Dive](#frequently-asked-questions--architecture-deep-dive)
 
+**Live Demo:** https://safestaff-shift-commander-webmcp-production.up.railway.app  
+**Test with:** ChatGPT in-app browser, or Chrome with `chrome://flags/#enable-webmcp-testing`
+
 ---
 
 ![SafeStaff Command Center](devpost_thumbnail.jpg)
@@ -43,6 +46,14 @@ This creates four practical advantages:
 - **Human authority by design:** The `submit_human_approval` tool always returns `human_confirmation_required`; only the Charge Nurse can approve or override a staffing decision in the interface.
 
 SafeStaff therefore demonstrates WebMCP as an architectural bridge between agentic assistance and governed, human-led operations—not as a mechanism for autonomous clinical decision-making.
+
+---
+
+## Human + Agent Collaboration
+
+SafeStaff is designed for shared operation rather than autonomous control. A WebMCP-compatible agent can inspect live synthetic shift context, forecast queue risk, generate staffing options, and compare trade-offs through structured tools. The Charge Nurse then reviews those recommendations in the dashboard and alone can approve or override a staffing action.
+
+This makes a previously fragile workflow—an agent interpreting a complex operations dashboard through UI scraping—structured, auditable, and governed.
 
 ---
 
@@ -159,7 +170,7 @@ Any attempt by an autonomous AI agent to execute `submit_human_approval()` is in
 
 ## WebMCP Tool Specifications
  
-All 5 tools are imperatively registered into `document.modelContext.registerTool(...)` upon mounting. When running in standard browsers without native WebMCP injection, the dashboard initializes a local demo adapter (`document.modelContext`) to allow complete in-browser testing while preserving the same named tools, JSON schemas, and interaction flow.
+All 5 tools are imperatively registered into `document.modelContext.registerTool(...)` upon mounting. When running in standard browsers without native WebMCP injection, the dashboard initializes a local demo adapter (`document.modelContext`) as a fallback for standard browsers while native WebMCP is used when provided by the host.
 
 | Tool Identifier | Purpose | Input Schema | Key Return Characteristics |
 |---|---|---|---|
@@ -316,7 +327,7 @@ npm run preview
 
 ## Browser Verification & Test Evidence
 
-The application underwent full end-to-end browser verification on `http://localhost:5173/`. All 5 verification milestones passed with 0 console errors:
+The application underwent full end-to-end browser verification on the deployed URL in ChatGPT’s in-app browser. All 5 verification milestones passed with 0 console errors:
 
 | Step | Verification Milestone | Observed Behavior | Evidence Screenshot |
 |---|---|---|---|
